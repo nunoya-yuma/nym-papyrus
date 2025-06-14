@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import CodeMirror from '@uiw/react-codemirror'
 import { markdown } from '@codemirror/lang-markdown'
+import { oneDark } from '@codemirror/theme-one-dark'
 import { marked } from 'marked'
 import './App.css'
 
@@ -25,6 +26,7 @@ function App() {
             value={markdownText}
             onChange={handleChange}
             extensions={[markdown()]}
+            theme={oneDark}
             basicSetup={{
               lineNumbers: true,
               foldGutter: true,
