@@ -1,34 +1,47 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import CodeMirror from '@uiw/react-codemirror'
+import { markdown } from '@codemirror/lang-markdown'
+import { marked } from 'marked'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [markdownText, setMarkdownText] = useState('# Welcome to Markdown Editor\n\n**Bold text** and *italic text*\n\n- List item 1\n- List item 2\n\n```javascript\nconsole.log("Hello World!");\n```')
+
+  const handleChange = (value: string) => {
+    setMarkdownText(value)
+  }
+
+  const getPreviewHtml = () => {
+    return marked(markdownText)
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="app">
+      <h1>Markdown Editor</h1>
+      <div className="editor-container">
+        <div className="editor-panel">
+          <h2>Editor</h2>
+          <CodeMirror
+            value={markdownText}
+            onChange={handleChange}
+            extensions={[markdown()]}
+            basicSetup={{
+              lineNumbers: true,
+              foldGutter: true,
+              dropCursor: false,
+              allowMultipleSelections: false,
+            }}
+          />
+        </div>
+        <div className="preview-panel">
+          <h2>Preview</h2>
+          <div
+            className="preview-content"
+            dangerouslySetInnerHTML={{ __html: getPreviewHtml() }}
+          />
+        </div>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    </div>
   )
 }
 
